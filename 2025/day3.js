@@ -38,10 +38,32 @@ function solution1(ratings) {
 function solution2(ratings) {
   let validJoltages = [];
   for (let i = 0; i < ratings.length; i++) {
-    validJoltages.push(calculateJoltage(ratings[i], 12));
+    const bank = ratings[i];
+    let result = '';
+    let startPos = 0;
+    
+    for (let pos = 0; pos < 12; pos++) {
+      const neededAfter = 12 - pos - 1;
+      const maxSearchPos = bank.length - neededAfter;
+      
+      let bestDigit = bank[startPos];
+      let bestIndex = startPos;
+      
+      for (let j = startPos; j < maxSearchPos; j++) {
+        if (bank[j] > bestDigit) {
+          bestDigit = bank[j];
+          bestIndex = j;
+        }
+      }
+      
+      result += bestDigit;
+      startPos = bestIndex + 1;
+    }
+    
+    validJoltages.push(BigInt(result));
   }
-  const sum = validJoltages.reduce((acc, curr) => acc + curr, 0);
-  console.log(sum);
+  const sum = validJoltages.reduce((acc, curr) => acc + curr, BigInt(0));
+  console.log(sum.toString());
 }
 
 solution1(ratings);
